@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <title>تسجيل الدخول - أنا عبقري</title>
+  <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
+  <style>
+    body {
+      background-color: #f0f8ff;
+      text-align: center;
+      font-family: 'Tajawal', sans-serif;
+      padding-top: 100px;
+    }
+    h1 {
+      font-size: 2em;
+      color: #4CAF50;
+      animation: bounce 1s infinite;
+    }
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #388e3c;
+    }
+
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>أنا عبقري</h1>
+  <p>مرحبا بك في موقع أنا عبقري التعليمي</p>
+  <button onclick="login()">تسجيل الدخول</button>
+
+  <script>
+    let auth0 = null;
+
+    const config = {
+      domain: "ضع_الدومين_هنا",
+      clientId: "ضع_الـClient_ID_هنا",
+      authorizationParams: {
+        redirect_uri: window.location.origin
+      }
+    };
+
+    async function initAuth0() {
+      auth0 = await createAuth0Client(config);
+
+      const query = window.location.search;
+      if (query.includes("code=") && query.includes("state=")) {
+        await auth0.handleRedirectCallback();
+        const user = await auth0.getUser();
+        console.log("User:", user);
+        window.location.href = "https://your-blog-name.blogspot.com"; // عدّل هنا بالرابط بتاع بلوجر
+      }
+    }
+
+    async function login() {
+      await auth0.loginWithRedirect();
+    }
+
+    window.onload = initAuth0;
+  </script>
+</body>
+</html>
